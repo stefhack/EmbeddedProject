@@ -21,7 +21,7 @@ Window::Window()
 
 void Window::newConnection(){
 QTcpSocket* newClient=_server->nextPendingConnection();
-_clients.push_back(newClient);
+_clients << newClient;
 
 connect(newClient,SIGNAL(readyRead()),this,SLOT(dataReceived()));
 connect(newClient,SIGNAL(disconnected()),this,SLOT(deconnection()));
@@ -45,11 +45,15 @@ if(socket->bytesAvailable() < _messageSize) return;
 QString message;
 in >> message;
 qDebug() << message;
-_serverState->setText(message);
+
 }
 
 void Window::deconnection(){
-
+qDebug()<< "un client vient de se déconnecter";
+QTcpSocket *socket = qobject_cast<QTcpSocket *>(sender());
+if(socket==0) return;
+_clients.removeOne(socket);
+socket->deleteLater();
 }
 
 void Window::serverStart()

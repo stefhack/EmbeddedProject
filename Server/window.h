@@ -20,12 +20,12 @@ private slots:
     void deconnection();
     void serverStart();
 private:
-
+    void sendMessage(QString &message);
     QLabel *_serverState;
     QPushButton *_quitButton;
     QPushButton *_startButton;
     QTcpServer *_server;
-    vector<QTcpSocket*> _clients;
+    QList<QTcpSocket*> _clients;
     quint16 _messageSize;
 };
 
